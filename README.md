@@ -4,6 +4,7 @@
 -pip install opencv-contrib-python
 -pip install pillow
 -pip install numpy
+
 3.Jalanin Record.py dulu, klo ada package python yg kurang coba cek google cara installnya
 4.Jalanin Scan.py
 5.Klo mau nambah muka, teken 'r'. Klo mau exit teken spasi
