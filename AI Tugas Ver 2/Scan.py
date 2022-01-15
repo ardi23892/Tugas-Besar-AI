@@ -6,8 +6,37 @@ from PIL import Image
 def time_in_range(start, end, current):
     return start <= current <= end
 
-start = time(6,30,0)
-end = time(12, 00, 0)
+#Define range waktu masuk setiap sesi kelas
+ses1_in_start = time(6,50,0)
+ses1_in_end = time(7, 20, 0)
+
+ses2_in_start = time(9,00,0)
+ses2_in_end = time(9, 20, 0)
+
+ses3_in_start = time(11,00,0)
+ses3_in_end = time(11, 20, 0)
+
+ses4_in_start = time(13,00,0)
+ses4_in_end = time(13, 20, 0)
+
+ses5_in_start = time(15,00,0)
+ses5_in_end = time(15, 20, 0)
+
+#Define range waktu keluar setiap sesi kelas
+ses1_out_start = time(8,50,0)
+ses1_out_end = time(8, 59, 59)
+
+ses2_out_start = time(10,50,0)
+ses2_out_end = time(10, 59, 59)
+
+ses3_out_start = time(12,50,0)
+ses3_out_end = time(12, 59, 59)
+
+ses4_out_start = time(14,50,0)
+ses4_out_end = time(14, 59, 59)
+
+ses5_out_start = time(17,50,0)
+ses5_out_end = time(18, 20, 0)
 
 #Import Excel
 wb = load_workbook('Attendance.xlsx')
@@ -17,8 +46,36 @@ checkin = wb['Checkin']
 checkout = wb['Checkout']
 
 #Bikin list baru buat data check in
-in_checked=[]
-out_checked=[]
+in_ses1=[]
+out_ses1=[]
+
+in_ses2=[]
+out_ses2=[]
+
+in_ses3=[]
+out_ses3=[]
+
+in_ses4=[]
+out_ses4=[]
+
+in_ses5=[]
+out_ses5=[]
+
+def attendance_input(history, sheet, session):
+    #Cek sebelumnya sudah check-in atau belum
+    if id not in history:
+        #Masukin ID ke list in_checked supaya ga check-in terus"an
+        history.append(id)
+        #Ngambil time buat di print ke excel
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        #Cari last row buat formula vlookup
+        LastRow = sheet.max_row +1
+        #Append data ke excel
+        sheet.append([id,'=VLOOKUP(A'+str(LastRow)+',\'Namelist\'!A:B,2,FALSE)',date.today(),session,current_time])
+                
+        #Save file excel
+        wb.save('Attendance.xlsx')
 
 #Jika belum ada data muka yang dimasukan, jalankan Record.py dahulu!!
 
@@ -49,36 +106,37 @@ while True:
 
         #Import current time buat nentuin check in atau check out
         current = datetime.now().time()
-        if(time_in_range(start, end, current)):
-            #Cek sebelumnya sudah check-in atau belum
-            if id not in in_checked:
-             #Masukin ID ke list in_checked supaya ga check-in terus"an
-                in_checked.append(id)
-                #Ngambil time buat di print ke excel
-                now = datetime.now()
-                current_time = now.strftime("%H:%M:%S")
-                #Cari last row buat formula vlookup
-                LastRow = checkin.max_row +1
-                #Append data ke excel
-                checkin.append([id,'=VLOOKUP(A'+str(LastRow)+',\'Namelist\'!A:B,2,FALSE)',date.today(),current_time])
-                
-                #Save file excel
-                wb.save('Attendance.xlsx')
-        else:
-            #Cek sebelumnya sudah check-out atau belum
-            if id not in out_checked:
-             #Masukin ID ke list in_checked supaya ga check-out terus"an
-                out_checked.append(id)
-                #Ngambil time buat di print ke excel
-                now = datetime.now()
-                current_time = now.strftime("%H:%M:%S")
-                #Cari last row buat formula vlookup
-                LastRow = checkout.max_row +1
-                #Append data ke excel
-                checkout.append([id,'=VLOOKUP(A'+str(LastRow)+',\'Namelist\'!A:B,2,FALSE)',date.today(),current_time])
-                
-                #Save file excel
-                wb.save('Attendance.xlsx')
+        #Check-in Session 1
+        if(time_in_range(ses1_in_start, ses1_in_end, current)):
+            attendance_input(in_ses1, checkin, 'Session 1')
+        #Check-out Session 1
+        elif(time_in_range(ses1_out_start, ses1_out_end, current)):
+            attendance_input(in_ses1, checkout,'Session 1')
+        #Check-in Session 2
+        elif(time_in_range(ses2_in_start, ses2_in_end, current)):
+            attendance_input(in_ses2, checkin, 'Session 2')
+        #Check-out Session 2
+        elif(time_in_range(ses2_out_start, ses2_out_end, current)):
+            attendance_input(in_ses2, checkout,'Session 2')
+        #Check-in Session 3
+        elif(time_in_range(ses3_in_start, ses3_in_end, current)):
+            attendance_input(in_ses3, checkin, 'Session 3')
+        #Check-out Session 3
+        elif(time_in_range(ses3_out_start, ses3_out_end, current)):
+            attendance_input(in_ses3, checkout,'Session 3')
+        #Check-in Session 4
+        elif(time_in_range(ses4_in_start, ses4_in_end, current)):
+            attendance_input(in_ses4, checkin, 'Session 4')
+        #Check-out Session 4
+        elif(time_in_range(ses4_out_start, ses4_out_end, current)):
+            attendance_input(in_ses4, checkout,'Session 4')
+        #Check-in Session 5
+        elif(time_in_range(ses5_in_start, ses5_in_end, current)):
+            attendance_input(in_ses5, checkin, 'Session 5')
+        #Check-out Session 5
+        elif(time_in_range(ses5_out_start, ses5_out_end, current)):
+            attendance_input(in_ses5, checkout,'Session 5')
+
         cv2.putText(frame,str(id),(x1+10,y1-10), cv2.FONT_HERSHEY_DUPLEX, 1, (0,200,0),2)
     #Show window buat webcam
     cv2.imshow("Webcam", frame)
@@ -87,11 +145,28 @@ while True:
     #Klik spasi jika ingin end program
     if key == ord(' '):
         break
-    #Klik r jika ingin daftar wajah baru
+    #Klik 'r' jika ingin daftar wajah baru
     elif key== ord('r'):
         cv2.destroyAllWindows()
         import Record
         Recog = cv2.face.LBPHFaceRecognizer_create()
         Recog.read('Dataset/training.xml')
+    #Klik 'm' untuk manual Override untuk data Checkout Excel
+    elif key==ord('m'):
+        manual_id=int(input('Masukan ID: '))
+        manual_session=input('Masukan sesi kelas: ')
+
+        #Ngambil time buat di print ke excel
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        #Cari last row buat formula vlookup
+        LastRow = checkout.max_row +1
+        #Append data ke excel
+        checkout.append([manual_id,'=VLOOKUP(A'+str(LastRow)+',\'Namelist\'!A:B,2,FALSE)',date.today(),'Session '+manual_session,current_time])
+
+        #Save file excel
+        wb.save('Attendance.xlsx')
+        #Print notice manual override berhasil
+        print('Input Data Check-Out berhasil')
 cv2.destroyAllWindows()
 video.release()
