@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 from openpyxl import Workbook, load_workbook
 
+#Import file Excel
 wb = load_workbook('Attendance.xlsx')
 ws = wb['Namelist']
 
@@ -33,7 +34,7 @@ while True:
     #Show window buat Webcam
     cv2.imshow("Webcam", frame)
     #Capture upto 30 Frame
-    if (a>29):
+    if (a>24):
         break
 cv2.destroyAllWindows()
 
