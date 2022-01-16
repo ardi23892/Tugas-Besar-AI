@@ -91,6 +91,8 @@ Recog = cv2.face.LBPHFaceRecognizer_create()
 Recog.read('Dataset/training.xml')
 a=0
 
+last_detected = datetime.now()
+
 while True:
     a=a+1
     check, frame = video.read()
@@ -136,10 +138,14 @@ while True:
         #Check-out Session 5
         elif(time_in_range(ses5_out_start, ses5_out_end, current)):
             attendance_input(in_ses5, checkout,'Session 5')
+        else:
+            if (datetime.now() - last_detected).total_seconds() < 5:
+                cv2.rectangle(frame, (215,5), (450,40),(0,200,0),-1)
+                cv2.putText(frame, 'Absensi diterima!', (220, 30), cv2.FONT_HERSHEY_DUPLEX, 0.8, (255, 255, 255), 2)
 
         cv2.putText(frame,str(id),(x1+10,y1-10), cv2.FONT_HERSHEY_DUPLEX, 1, (0,200,0),2)
     #Show window buat webcam
-    cv2.imshow("Webcam", frame)
+    cv2.imshow("Attendance Cam", frame)
     #Waitkey 1 supaya video ga freeze
     key = cv2.waitKey(1)
     #Klik spasi jika ingin end program
