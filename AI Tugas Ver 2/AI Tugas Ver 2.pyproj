@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>61af93cf-dc3d-409c-9a17-e91d5a810fca</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Record.py</StartupFile>
+    <StartupFile>Scan.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

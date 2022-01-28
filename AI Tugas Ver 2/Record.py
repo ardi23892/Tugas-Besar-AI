@@ -19,7 +19,6 @@ id=input('Masukan Student ID: ')
 name=input('Masukan nama: ')
 ws.append([int(id),name])
 
-wb.save('Attendance.xlsx')
 a=0
 
 def getface(grayscale,frame):
@@ -48,6 +47,9 @@ while True:
         getface(grayscale,frame)
         break
 cv2.destroyAllWindows()
+
+#Save excel
+wb.save('Attendance.xlsx')
 
 #Manggil code untuk training
 import Train
